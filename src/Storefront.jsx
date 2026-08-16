@@ -356,11 +356,18 @@ export default function App() {
       total: cartTotal,
       status: "Nieuw",
     };
+    let existingOrders = [];
     try {
       const existing = await storage.get("ijs-orders", true);
-      const list = existing && existing.value ? JSON.parse(existing.value) : [];
-      await storage.set("ijs-orders", JSON.stringify([orderRecord, ...list]), true);
-    } catch (_) {}
+      existingOrders = existing && existing.value ? JSON.parse(existing.value) : [];
+    } catch (_) {
+      existingOrders = [];
+    }
+    try {
+      await storage.set("ijs-orders", JSON.stringify([orderRecord, ...existingOrders]), true);
+    } catch (e) {
+      alert("FOUT bij opslaan bestelling: " + (e && e.message ? e.message : JSON.stringify(e)));
+    }
 
     setLastOrder({
       number: orderNumber,
