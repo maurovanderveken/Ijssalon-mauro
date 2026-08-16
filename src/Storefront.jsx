@@ -254,6 +254,7 @@ export default function App() {
         if (p && p.value) setProducts(JSON.parse(p.value));
         else await window.storage.set("ijs-products", JSON.stringify(SEED_PRODUCTS), true);
       } catch (e) {
+         alert("FOUT bij laden: " + (e && e.message ? e.message : JSON.stringify(e)));
         /* no stored catalog yet — seed defaults stay */
         try {
           await window.storage.set("ijs-products", JSON.stringify(SEED_PRODUCTS), true);
